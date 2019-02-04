@@ -1,0 +1,122 @@
+\documentclass[12pt,a4paper]{paper}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+% \DefineVerbatimEnvironment{Sinput}{Verbatim} {xrightmargin=2cm}
+% \DefineVerbatimEnvironment{Soutput}{Verbatim}{xrightmargin=2cm}
+% \DefineVerbatimEnvironment{Scode}{Verbatim}{xrightmargin=2cm}
+% \fvset{listparameters={\setlength{\topsep}{0pt}}}
+% \renewenvironment{Schunk}{\vspace{\topsep}}{\vspace{\topsep}}
+\begin{document}
+\title{STAT646 - Homework 1\\\small{Daniel Osorio - dcosorioh@tamu.edu\\Department of Veterinary Integrative Biosciences\\Texas A\&M University}}
+\maketitle
+\SweaveOpts{concordance=TRUE}
+\begin{enumerate}
+\item Consider the human gene with HGNC symbol SPRR4.
+\begin{enumerate}
+\item Use the Biomart Ensembl database to obtain cDNA and peptide sequences for SPRR4.
+What are the two sequences?
+<<echo=false>>=
+options(width=60)
+@
+<<>>=
+library(biomaRt)
+mart <- useMart(biomart = "ensembl", 
+                dataset = "hsapiens_gene_ensembl")
+peptideS <- getSequence(id="SPRR4", 
+                        type="hgnc_symbol", 
+                        seqType="peptide", 
+                        mart = mart)[,1]
+peptideS
+cdnaS <- getSequence(id="SPRR4", 
+                     type="hgnc_symbol", 
+                     seqType="cdna", 
+                     mart = mart)[,1]
+cdnaS
+@
+\item What is the Entrez ID for SPRR4?
+<<>>=
+entrez <- getBM(attributes = c("hgnc_symbol", "entrezgene"), 
+                mart = mart)
+entrezSPRR4 <- entrez[entrez[,1] %in% "SPRR4",2]
+entrezSPRR4
+@
+\item Retrieve GO information for SPRR4. What biological processes is the gene involved in?
+Where in the cell is the SPRR4 protein located?
+<<>>=
+library(org.Hs.eg.db)
+library(GO.db)
+
+GO <- mget(x = as.character(entrezSPRR4), 
+           envir = org.Hs.egGO)[[1]]
+GO <- data.frame(GO=unlist(lapply(GO, function(X){c(X[1])})), 
+                 ONTOLOGY =unlist(lapply(GO, function(X){c(X[3])})))
+
+as.vector(Definition(as.vector(GO[GO[,2] == "BP",1])))
+as.vector(Term(as.vector(GO[GO[,2] == "CC",1])))
+@
+\end{enumerate}
+\item Consider the human gene with HGNC symbol BRCA1.
+\begin{enumerate}
+\item Why is the BRCA1 gene relevant to breast cancer? \textit{`BRCA' is an abbreviation for `BReast CAncer gene.', it is a gene that encodes a nuclear phosphoprotein that plays a role in maintaining genomic stability, and it also acts as a tumor suppressor. Mutations in this gene are responsible for approximately 40\% of inherited breast cancers and more than 80\% of inherited breast and ovarian cancers.}
+\item Which probeset on the Affymetrix HGU133a Gene Chip microarray corresponds to BRCA1?
+<<>>=
+library("hgu133a.db")
+affyIds <- select(hgu133a.db, keys=keys(hgu133a.db), 
+                  columns = c("SYMBOL", "ENTREZID"))
+affyIds[affyIds[,2] %in% "BRCA1",]
+@
+\item According to the kegg Bioconductor package, what protein pathway is BRCA1 involved
+in? Note: This is not the only pathway BRCA1 is involved in. The kegg package is not
+complete here.
+<<>>=
+library(KEGG.db)
+hsaPath <- unlist(mget(x = as.character(entrez[entrez[,1] %in% "BRCA1",2]), 
+            envir = KEGGEXTID2PATHID))
+KEGGPATHID2NAME[[gsub("hsa","",hsaPath)]]
+@
+\item What other genes are involved in the above protein pathway? Give their HGNC symbols
+<<>>=
+pathGenes <- entrez[entrez[,2] %in% KEGGPATHID2EXTID[[hsaPath]],1]
+pathGenes
+@
+\item Use the topGO package to perform a GO enrichment analysis on the genes involved in
+the above KEGG pathway. In the runTest function, use the “classic” algorithm and the
+“fisher” test.
+<<>>=
+library(topGO)
+allGenes <- rep(0,length(affyIds[,1]))
+names(allGenes) <- affyIds[,1]
+allGenes[affyIds[,2] %in% pathGenes] <- 1
+genSel <- function(X){return(X == 1)}
+GO_data <- new(Class = "topGOdata", 
+               ontology = "BP", 
+               allGenes = allGenes, 
+               geneSel = genSel,
+               nodeSize = 10,
+               annot = annFUN.db, 
+               affyLib = "hgu133a.db")
+enrichment <- runTest(GO_data, algorithm = "classic", statistic = "fisher")
+@
+\begin{enumerate}
+\item How many GO terms have p-values < 0.001?
+<<>>=
+sum(score(enrichment) < 0.01)
+@
+\item What GO term has the smallest p-value (and is hence the “most enriched” in the
+pathway genes)? Does it describe a cellular location, a biological process, or a
+molecular function? How does the result compare to the KEGG pathway for BRCA1
+that we found above?
+<<>>=
+goTerm <- names(which.min(score(enrichment)))
+Definition(goTerm)
+Term(goTerm)
+@
+\end{enumerate}
+\end{enumerate}
+\end{enumerate}
+\end{document}
