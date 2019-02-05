@@ -6,11 +6,6 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
-% \DefineVerbatimEnvironment{Sinput}{Verbatim} {xrightmargin=2cm}
-% \DefineVerbatimEnvironment{Soutput}{Verbatim}{xrightmargin=2cm}
-% \DefineVerbatimEnvironment{Scode}{Verbatim}{xrightmargin=2cm}
-% \fvset{listparameters={\setlength{\topsep}{0pt}}}
-% \renewenvironment{Schunk}{\vspace{\topsep}}{\vspace{\topsep}}
 \begin{document}
 \title{STAT646 - Homework 1\\\small{Daniel Osorio - dcosorioh@tamu.edu\\Department of Veterinary Integrative Biosciences\\Texas A\&M University}}
 \maketitle
@@ -93,12 +88,12 @@ allGenes <- rep(0,length(affyIds[,1]))
 names(allGenes) <- affyIds[,1]
 allGenes[affyIds[,2] %in% pathGenes] <- 1
 genSel <- function(X){return(X == 1)}
-GO_data <- new(Class = "topGOdata", 
-               ontology = "BP", 
-               allGenes = allGenes, 
+GO_data <- new(Class = "topGOdata",
+               ontology = "BP",
+               allGenes = allGenes,
                geneSel = genSel,
                nodeSize = 10,
-               annot = annFUN.db, 
+               annot = annFUN.db,
                affyLib = "hgu133a.db")
 enrichment <- runTest(GO_data, algorithm = "classic", statistic = "fisher")
 @

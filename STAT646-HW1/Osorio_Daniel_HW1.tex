@@ -6,11 +6,6 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
-% \DefineVerbatimEnvironment{Sinput}{Verbatim} {xrightmargin=2cm}
-% \DefineVerbatimEnvironment{Soutput}{Verbatim}{xrightmargin=2cm}
-% \DefineVerbatimEnvironment{Scode}{Verbatim}{xrightmargin=2cm}
-% \fvset{listparameters={\setlength{\topsep}{0pt}}}
-% \renewenvironment{Schunk}{\vspace{\topsep}}{\vspace{\topsep}}
 \usepackage{Sweave}
 \begin{document}
 \title{STAT646 - Homework 1\\\small{Daniel Osorio - dcosorioh@tamu.edu\\Department of Veterinary Integrative Biosciences\\Texas A\&M University}}
@@ -33,7 +28,8 @@ What are the two sequences?
 > peptideS
 \end{Sinput}
 \begin{Soutput}
-[1] "MSSQQQQRQQQQCPPQRAQQQQVKQPCQPPPVKCQETCAPKTKDPCAPQVKKQCPPKGTIIPAQQKCPSAQQASKSKQK*"
+[1] "MSSQQQQRQQQQCPPQRAQQQQVKQPCQPPPVKCQETCAPKTKDPCAPQVKKQCPPKGTIIPAQ
+     QKCPSAQQASKSKQK*"
 \end{Soutput}
 \begin{Sinput}
 > cdnaS <- getSequence(id="SPRR4", 
@@ -43,7 +39,18 @@ What are the two sequences?
 > cdnaS
 \end{Sinput}
 \begin{Soutput}
-[1] "CTCTCCTGGGGTCCAGCTTGTCGCCTCTGGCTCACCTGTTCCTAGAGCAATGTCTTCCCAGCAGCAGCAGCGGCAGCAGCAGCAGTGCCCACCCCAGAGGGCCCAGCAGCAGCAAGTGAAGCAGCCTTGTCAGCCACCCCCTGTTAAATGTCAAGAGACATGTGCACCCAAAACCAAGGATCCATGTGCTCCCCAGGTCAAGAAGCAATGCCCACCGAAAGGCACCATCATTCCAGCCCAGCAGAAGTGTCCCTCAGCCCAGCAAGCCTCCAAGAGCAAACAGAAGTAAGGATGGACTGGATATTACCATCATCCACCATCCTGGCTACCAGATGGAACCTTCTCTTCTTCCTTCTCCTCTTCCCTCCAGCTCTTGAGCCTACCCTCCTCTCACATCTCCTCCTGCCCAAGATGTAAGGAAGCATTGTAAGGATTTCTTCCCATCGTACCCTTCCCCACACATACCACCTTGGCTTCTTCTATATCCCACCCCGATGCTCTCCCAGGTGGGTGTGAGAGAGACCTCATTCTCTGCAGGCTCCAGCGTGGCCACAGCTAAGGCCCATCCATTTCCCAAAGTGAGGAAAGTGTCTGGGCTTCTTCTGGGGTTCCACCCTGACAAGTAGGGTCACAGAGGCTGGTGCACAGTTTCTGCCTCATTCCTCTCCATGATGCCCCCTGCTCTGGGCTTCTCTCCTGTTTTCCCCAATAAATATGTGCCTCATGTAATAAA"
+[1] "CTCTCCTGGGGTCCAGCTTGTCGCCTCTGGCTCACCTGTTCCTAGAGCAATGTCTTCCCAGCAG
+     CAGCAGCGGCAGCAGCAGCAGTGCCCACCCCAGAGGGCCCAGCAGCAGCAAGTGAAGCAGCCTT
+     GTCAGCCACCCCCTGTTAAATGTCAAGAGACATGTGCACCCAAAACCAAGGATCCATGTGCTCC
+     CCAGGTCAAGAAGCAATGCCCACCGAAAGGCACCATCATTCCAGCCCAGCAGAAGTGTCCCTCA
+     GCCCAGCAAGCCTCCAAGAGCAAACAGAAGTAAGGATGGACTGGATATTACCATCATCCACCAT
+     CCTGGCTACCAGATGGAACCTTCTCTTCTTCCTTCTCCTCTTCCCTCCAGCTCTTGAGCCTACC
+     CTCCTCTCACATCTCCTCCTGCCCAAGATGTAAGGAAGCATTGTAAGGATTTCTTCCCATCGTA
+     CCCTTCCCCACACATACCACCTTGGCTTCTTCTATATCCCACCCCGATGCTCTCCCAGGTGGGT
+     GTGAGAGAGACCTCATTCTCTGCAGGCTCCAGCGTGGCCACAGCTAAGGCCCATCCATTTCCCA
+     AAGTGAGGAAAGTGTCTGGGCTTCTTCTGGGGTTCCACCCTGACAAGTAGGGTCACAGAGGCTG
+     GTGCACAGTTTCTGCCTCATTCCTCTCCATGATGCCCCCTGCTCTGGGCTTCTCTCCTGTTTTC
+     CCCAATAAATATGTGCCTCATGTAATAAA"
 \end{Soutput}
 \end{Schunk}
 \item What is the Entrez ID for SPRR4?
@@ -71,9 +78,14 @@ Where in the cell is the SPRR4 protein located?
 > as.vector(Definition(as.vector(GO[GO[,2] == "BP",1])))
 \end{Sinput}
 \begin{Soutput}
-[1] "The formation of a covalent cross-link between or within protein chains."                                                                                                                                    
-[2] "The process in which a relatively unspecialized cell acquires specialized features of a keratinocyte."                                                                                                       
-[3] "The process in which the cytoplasm of the outermost cells of the vertebrate epidermis is replaced by keratin. Keratinization occurs in the stratum corneum, feathers, hair, claws, nails, hooves, and horns."
+[1] "The formation of a covalent cross-link between or within protein 
+     chains."                                                                                                                                    
+[2] "The process in which a relatively unspecialized cell acquires 
+     specialized features of a keratinocyte."                                                                                                       
+[3] "The process in which the cytoplasm of the outermost cells of the 
+     vertebrate epidermis is replaced by keratin. Keratinization occurs 
+     in the stratum corneum, feathers, hair, claws, nails, hooves, 
+     and horns."
 \end{Soutput}
 \begin{Sinput}
 > as.vector(Term(as.vector(GO[GO[,2] == "CC",1])))
@@ -107,7 +119,7 @@ complete here.
 \begin{Schunk}
 \begin{Sinput}
 > library(KEGG.db)
-> hsaPath <- unlist(mget(x = as.character(entrez[entrez[,1] %in% "BRCA1",2]), 
+> hsaPath <- unlist(mget(x=as.character(entrez[entrez[,1] %in% "BRCA1",2]), 
 +             envir = KEGGEXTID2PATHID))
 > KEGGPATHID2NAME[[gsub("hsa","",hsaPath)]]
 \end{Sinput}
@@ -161,14 +173,15 @@ the above KEGG pathway. In the runTest function, use the “classic” algorithm
 > names(allGenes) <- affyIds[,1]
 > allGenes[affyIds[,2] %in% pathGenes] <- 1
 > genSel <- function(X){return(X == 1)}
-> GO_data <- new(Class = "topGOdata", 
-+                ontology = "BP", 
-+                allGenes = allGenes, 
+> GO_data <- new(Class = "topGOdata",
++                ontology = "BP",
++                allGenes = allGenes,
 +                geneSel = genSel,
 +                nodeSize = 10,
-+                annot = annFUN.db, 
++                annot = annFUN.db,
 +                affyLib = "hgu133a.db")
-> enrichment <- runTest(GO_data, algorithm = "classic", statistic = "fisher")
+> enrichment <- runTest(GO_data, algorithm = "classic", 
+                        statistic = "fisher")
 \end{Sinput}
 \end{Schunk}
 \begin{enumerate}
@@ -190,15 +203,15 @@ that we found above?
 > goTerm <- names(which.min(score(enrichment)))
 > Definition(goTerm)
 \end{Sinput}
-\begin{Soutput}
-                                                                                                                                                                  GO:0032446 
-"A protein modification process in which one or more groups of a small protein, such as ubiquitin or a ubiquitin-like protein, are covalently attached to a target protein." 
+\begin{Soutput}                                                                                                                                                                
+"A protein modification process in which one or more groups of a small 
+ protein, such as ubiquitin or a ubiquitin-like protein, are covalently 
+ attached to a target protein." 
 \end{Soutput}
 \begin{Sinput}
 > Term(goTerm)
 \end{Sinput}
 \begin{Soutput}
-                                         GO:0032446 
 "protein modification by small protein conjugation" 
 \end{Soutput}
 \end{Schunk}
