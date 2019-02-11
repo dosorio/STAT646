@@ -65,7 +65,7 @@ the samples using Euclidean distance.
 \end{Soutput}
 \end{Schunk}
 \item Report a height plot showing merge distances. How many clusters would you say
-there are?
+there are? \textit{Two and some outliers}
 \begin{Schunk}
 \begin{Sinput}
 > par(mfrow=c(1,3), mar=c(3,1,1,5))
@@ -82,6 +82,7 @@ there are?
 \end{Schunk}
 \includegraphics{Osorio_Daniel_HW2-004}
 \item Interpret the clusters that you found with respect to the “meta” data for this dataset
+\textit{The clusters are mainly driven by the strain type, fuel (10) samples are clustered together as well as the wine’s (4) samples.}
 \end{enumerate}
 \item Carry out K-means clustering, with K = 3. How do the results compare to the hierarchical clustering results you obtained using average linkage?
 \begin{Schunk}
@@ -134,13 +135,19 @@ to figure out what the column names correspond to. Note that these are paired da
 \end{Sinput}
 \end{Schunk}
 \includegraphics{Osorio_Daniel_HW2-007}
+\\\textit{Clusters are driven by the state of the surgery, pre- and post- surgery samples are clustered together.}
 \item Carry out a principal component analysis of the intensities, treating individuals (columns)
 as variables and features (rows) as replicates. Interpret the results.
 \begin{Schunk}
 \begin{Sinput}
 > cGSE19533 <- t(scale(t(GSE19533), center = TRUE, scale = TRUE))
+> par(mfrow=c(1,2), mar=c(3,3,1,3))
 > PC <- prcomp(t(cGSE19533))
-> plot(PC$x[,1:2])
+> colors <- rep("gray", nrow(PC$x))
+> colors[rownames(PC$x) %in% paste0("GSM4870",seq(37,45,2))] <- "blue"
+> colors[rownames(PC$x) %in% paste0("GSM4870",seq(36,44,2))] <- "red"
+> barplot(PC$sdev/sum(PC$sdev))
+> plot(PC$x[,1:2], col = colors)
 \end{Sinput}
 \end{Schunk}
 \includegraphics{Osorio_Daniel_HW2-008}
@@ -149,6 +156,7 @@ results.
 \begin{Schunk}
 \begin{Sinput}
 > SVD <- svd(t(cGSE19533))
+> par(mar=c(3,15,1,15))
 > plot(SVD$u[,1:2])
 \end{Sinput}
 \end{Schunk}

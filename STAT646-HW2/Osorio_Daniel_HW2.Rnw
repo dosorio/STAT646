@@ -45,8 +45,8 @@ c(sNames[abs(sglHclust$merge[1,])], round(sglHclust$height[1],2))
 c(sNames[abs(cptHclust$merge[1,])], round(cptHclust$height[1],2))
 @
 \item Report a height plot showing merge distances. How many clusters would you say
-there are?
-<<fig=TRUE, width=10, height=5>>==
+there are? \textit{Two and some outliers}
+<<fig=TRUE, width=12, height=7>>==
 par(mfrow=c(1,3), mar=c(3,1,1,5))
 plot(as.dendrogram(avgHclust), horiz = TRUE, 
      main = "Average Linkage")
@@ -59,6 +59,7 @@ plot(as.dendrogram(cptHclust), horiz = TRUE,
 abline(v = 4e5, lty = 2, col= "red")
 @
 \item Interpret the clusters that you found with respect to the “meta” data for this dataset
+\textit{The clusters are mainly driven by the strain type, fuel (10) samples are clustered together as well as the wine’s (4) samples.}
 \end{enumerate}
 \item Carry out K-means clustering, with K = 3. How do the results compare to the hierarchical clustering results you obtained using average linkage?
 <<fig=TRUE, height=5, width=10>>=
@@ -103,17 +104,24 @@ hc <- hclust(dGSE19533, method = "complete")
 par(mar=c(3,15,1,15))
 plot(as.dendrogram(hc), horiz = TRUE)
 @
+\\\textit{Clusters are driven by the state of the surgery, pre- and post- surgery samples are clustered together.}
 \item Carry out a principal component analysis of the intensities, treating individuals (columns)
 as variables and features (rows) as replicates. Interpret the results.
 <<fig=TRUE,height=5, width=10>>=
 cGSE19533 <- t(scale(t(GSE19533), center = TRUE, scale = TRUE))
+par(mfrow=c(1,2), mar=c(3,3,1,3))
 PC <- prcomp(t(cGSE19533))
-plot(PC$x[,1:2])
+colors <- rep("gray", nrow(PC$x))
+colors[rownames(PC$x) %in% paste0("GSM4870",seq(37,45,2))] <- "blue"
+colors[rownames(PC$x) %in% paste0("GSM4870",seq(36,44,2))] <- "red"
+barplot(PC$sdev/sum(PC$sdev))
+plot(PC$x[,1:2], col = colors)
 @
 \item Carry out singular value decomposition of the column-centered intensities. Interpret the
 results.
 <<fig=TRUE, height=5, width=10>>=
 SVD <- svd(t(cGSE19533))
+par(mar=c(3,15,1,15))
 plot(SVD$u[,1:2])
 @
 \item Compute one-sample t-statistics for each gene to search for features for which the mean
