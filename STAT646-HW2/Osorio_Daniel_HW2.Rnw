@@ -20,19 +20,21 @@ yeastInfo <- lapply(yeastFiles, function(file){
 spots <- table(unlist(lapply(yeastInfo, function(X){X[,1]})))
 spots <- names(spots)[spots == length(yeastInfo)]
 yeastInfo <- lapply(yeastInfo, function(X){
-  X[X[,1] %in% spots,c("Ch1.Net..Mean.","Ch2.Net..Mean.")]
+    X[X[,1] %in% spots,c("Ch1.Intensity..Median.","Ch2.Intensity..Median.")]
 })
 sNames <- gsub(".txt$","",basename(yeastFiles))
+sNames <- gsub("[[:alpha:]]","",sNames)
 chanel1 <- sapply(yeastInfo, function(X){X[,1]})
 chanel2 <- sapply(yeastInfo, function(X){X[,2]})
 colnames(chanel1) <- colnames(chanel2) <- sNames
 rownames(chanel1) <- rownames(chanel2) <- spots
+Y <- log2(chanel2) - log2(chanel1)
 @
 \begin{enumerate}
 \item For each of average, complete, and single linkage, carry out hierarchical clustering on
 the samples using Euclidean distance.
 <<>>=
-distanceMatrix <- dist(t(chanel1))
+distanceMatrix <- dist(t(Y))
 avgHclust <- hclust(distanceMatrix, method = "average")
 sglHclust <- hclust(distanceMatrix, method = "single")
 cptHclust <- hclust(distanceMatrix, method = "complete")
@@ -45,23 +47,30 @@ c(sNames[abs(sglHclust$merge[1,])], round(sglHclust$height[1],2))
 c(sNames[abs(cptHclust$merge[1,])], round(cptHclust$height[1],2))
 @
 \item Report a height plot showing merge distances. How many clusters would you say
-there are? \textit{Two and some outliers}
+there are? \textit{Depending of the linkage method, between 2 and 4.}
 <<fig=TRUE, width=12, height=7>>==
-par(mfrow=c(1,3), mar=c(3,1,1,5))
+par(mfrow=c(2,3), mar=c(3,3,1,1))
+plot(avgHclust$height)
+abline(h = 60.5, col = "red", lty = 2)
+plot(sglHclust$height)
+abline(h = 44.5, col = "red", lty = 2)
+plot(cptHclust$height)
+abline(h = 71.35, col = "red", lty = 2)
+par(mar=c(3,2,1,4))
 plot(as.dendrogram(avgHclust), horiz = TRUE, 
      main = "Average Linkage")
-abline(v = 2.9e5, lty = 2, col= "red")
+abline(v = 60.5, lty = 2, col= "red")
 plot(as.dendrogram(sglHclust), horiz = TRUE, 
      main = "Single Linkage")
-abline(v = 2.1e5, lty = 2, col= "red")
+abline(v = 44.5, lty = 2, col= "red")
 plot(as.dendrogram(cptHclust), horiz = TRUE, 
      main = "Complete Linkage")
-abline(v = 4e5, lty = 2, col= "red")
+abline(v = 71.35, lty = 2, col= "red")
 @
 \item Interpret the clusters that you found with respect to the “meta” data for this dataset
-\textit{The clusters are mainly driven by the strain type, fuel (10) samples are clustered together as well as the wine’s (4) samples.}
+\textit{The clusters are mainly driven by the strain type, fuel (10) samples are always clustered together as well as the wine’s (4) samples, depending on the linkage method, the association between strains is recovered differentially.}
 \end{enumerate}
-\item Carry out K-means clustering, with K = 3. How do the results compare to the hierarchical clustering results you obtained using average linkage?
+\item Carry out K-means clustering, with K = 3. How do the results compare to the hierarchical clustering results you obtained using average linkage? \textit{Main clusters are recovered identically}
 <<fig=TRUE, height=5, width=10>>=
 avgHclust <- as.dendrogram(avgHclust)
 set.seed(11)
@@ -104,25 +113,19 @@ hc <- hclust(dGSE19533, method = "complete")
 par(mar=c(3,15,1,15))
 plot(as.dendrogram(hc), horiz = TRUE)
 @
-\\\textit{Clusters are driven by the state of the surgery, pre- and post- surgery samples are clustered together.}
+\\\textit{Clusters are driven by the state of the surgery, pre- and post- surgery samples are mainly clustered together.}
 \item Carry out a principal component analysis of the intensities, treating individuals (columns)
 as variables and features (rows) as replicates. Interpret the results.
 <<fig=TRUE,height=5, width=10>>=
-cGSE19533 <- t(scale(t(GSE19533), center = TRUE, scale = TRUE))
-par(mfrow=c(1,2), mar=c(3,3,1,3))
+cGSE19533 <- t(scale(t(GSE19533)))
 PC <- prcomp(t(cGSE19533))
-colors <- rep("gray", nrow(PC$x))
-colors[rownames(PC$x) %in% paste0("GSM4870",seq(37,45,2))] <- "blue"
-colors[rownames(PC$x) %in% paste0("GSM4870",seq(36,44,2))] <- "red"
 barplot(PC$sdev/sum(PC$sdev))
-plot(PC$x[,1:2], col = colors)
+plot(PC$x[,1:2])
 @
 \item Carry out singular value decomposition of the column-centered intensities. Interpret the
 results.
 <<fig=TRUE, height=5, width=10>>=
 SVD <- svd(t(cGSE19533))
-par(mar=c(3,15,1,15))
-plot(SVD$u[,1:2])
 @
 \item Compute one-sample t-statistics for each gene to search for features for which the mean
 paired difference is not 0. Use the bootstrap to obtain p-values. Use p.adjust to translate
@@ -132,10 +135,11 @@ in class and Q\&A.
 <<>>=
 pre <- paste0("GSM4870",seq(37,45,2))
 pos <- paste0("GSM4870",seq(36,44,2))
+pre <- t(scale(t(GSE19533[,pre]), center = TRUE, scale = TRUE))
+pos <- t(scale(t(GSE19533[,pos]), center = TRUE, scale = TRUE))
 diff <- GSE19533[,pos] - GSE19533[,pre]
 tStat <- apply(diff,1,function(X){t.test(X)$statistic})
-pre <- t(scale(t(GSE19533[,pre]), center = TRUE, scale = FALSE))
-pos <- t(scale(t(GSE19533[,pos]), center = TRUE, scale = FALSE))
+
 
 # boot <- sapply(1:100, function(b){
 #   print(b)
