@@ -151,8 +151,12 @@ as variables and features (rows) as replicates. Interpret the results.
 \begin{Sinput}
 > cGSE19533 <- t(scale(t(GSE19533)))
 > PC <- prcomp(t(cGSE19533))
+> colors <- ifelse(test = rownames(PC$x) %in% paste0("GSM4870",seq(37,45,2)), 
++        yes = "blue", 
++        no = "red")
+> par(mfrow=c(1,2), mar=c(3,3,1,1), mgp=c(1.5,0.5,0))
 > barplot(PC$sdev/sum(PC$sdev))
-> plot(PC$x[,1:2])
+> plot(PC$x[,1:2], col = colors)
 \end{Sinput}
 \end{Schunk}
 \includegraphics{Osorio_Daniel_HW2-008}
@@ -160,7 +164,15 @@ as variables and features (rows) as replicates. Interpret the results.
 results.
 \begin{Schunk}
 \begin{Sinput}
-> SVD <- svd(t(cGSE19533))
+> SVD <- svd(t(scale(GSE19533)))
+> round((SVD$d^2)/sum(SVD$d^2),2)
+\end{Sinput}
+\begin{Soutput}
+ [1] 0.96 0.01 0.01 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+\end{Soutput}
+\begin{Sinput}
+> plot(SVD$v[,1])
+> plot(SVD$u[,1])
 \end{Sinput}
 \end{Schunk}
 \includegraphics{Osorio_Daniel_HW2-009}
@@ -171,8 +183,26 @@ are significant at an estimated FDR of 0.05? I will give tips on R code for this
 in class and Q\&A.
 \begin{Schunk}
 \begin{Sinput}
-> pre <- paste0("GSM4870",seq(37,45,2))
-> pos <- paste0("GSM4870",seq(36,44,2))
-> pre <- t(scale(t(GSE19533[,pre]), center = TRUE, scale = TRUE))
-> pos <- t(scale(t(GSE19533[,pos]), center = TRUE, scale = TRUE))
-> diff <- GSE19533[,pos] - GSE19533[,pre]
+> # pre <- paste0("GMS")
+> # pre <- t(scale(t(GSE19533[,pre]), center = TRUE, scale = TRUE))
+> # pos <- t(scale(t(GSE19533[,pos]), center = TRUE, scale = TRUE))
+> # diff <- pos-pre
+> # tStat <- apply(diff,1,function(X){t.test(X)$statistic})
+> 
+> 
+> # boot <- sapply(1:100, function(b){
+> #   print(b)
+> #   sColumns <- sample(1:5, replace = TRUE)
+> #   if(length(unique(sColumns)) > 1){
+> #     dColumns <- pos[,sColumns] - pre[,sColumns]
+> #     apply(dColumns,1,function(X){t.test(X)$statistic})
+> #   }
+> # })
+> # 
+> # pValues <- rowMeans(boot > tStat)
+> # sum(p.adjust(pValues, method = "fdr") < 0.05)
+\end{Sinput}
+\end{Schunk}
+\end{enumerate}
+\end{enumerate}
+\end{document}

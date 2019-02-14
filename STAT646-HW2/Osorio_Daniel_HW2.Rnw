@@ -119,13 +119,20 @@ as variables and features (rows) as replicates. Interpret the results.
 <<fig=TRUE,height=5, width=10>>=
 cGSE19533 <- t(scale(t(GSE19533)))
 PC <- prcomp(t(cGSE19533))
+colors <- ifelse(test = rownames(PC$x) %in% paste0("GSM4870",seq(37,45,2)), 
+       yes = "blue", 
+       no = "red")
+par(mfrow=c(1,2), mar=c(3,3,1,1), mgp=c(1.5,0.5,0))
 barplot(PC$sdev/sum(PC$sdev))
-plot(PC$x[,1:2])
+plot(PC$x[,1:2], col = colors)
 @
 \item Carry out singular value decomposition of the column-centered intensities. Interpret the
 results.
 <<fig=TRUE, height=5, width=10>>=
-SVD <- svd(t(cGSE19533))
+SVD <- svd(t(scale(GSE19533)))
+round((SVD$d^2)/sum(SVD$d^2),2)
+plot(SVD$v[,1])
+plot(SVD$u[,1])
 @
 \item Compute one-sample t-statistics for each gene to search for features for which the mean
 paired difference is not 0. Use the bootstrap to obtain p-values. Use p.adjust to translate
@@ -133,12 +140,11 @@ the p-values to FDR estimates (specify argument method = ‘fdr’). How many fe
 are significant at an estimated FDR of 0.05? I will give tips on R code for this problem
 in class and Q\&A.
 <<>>=
-pre <- paste0("GSM4870",seq(37,45,2))
-pos <- paste0("GSM4870",seq(36,44,2))
-pre <- t(scale(t(GSE19533[,pre]), center = TRUE, scale = TRUE))
-pos <- t(scale(t(GSE19533[,pos]), center = TRUE, scale = TRUE))
-diff <- GSE19533[,pos] - GSE19533[,pre]
-tStat <- apply(diff,1,function(X){t.test(X)$statistic})
+# pre <- paste0("GMS")
+# pre <- t(scale(t(GSE19533[,pre]), center = TRUE, scale = TRUE))
+# pos <- t(scale(t(GSE19533[,pos]), center = TRUE, scale = TRUE))
+# diff <- pos-pre
+# tStat <- apply(diff,1,function(X){t.test(X)$statistic})
 
 
 # boot <- sapply(1:100, function(b){
