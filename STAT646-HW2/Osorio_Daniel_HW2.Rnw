@@ -151,11 +151,14 @@ pos <- paste0("GSM4870", seq(36,44,2))
 diff <- GSE19533[,pos] - GSE19533[,pre]
 # Statistic under the original values
 tStat <- apply(diff,1,function(X){t.test(X)$statistic})
-# Centering the values under the null hypothesis
+# Centering the values to make simulation under the null hypothesis
 diff <- t(scale(t(diff)))
 # Bootstrap
-boot <- pbapply::pbsapply(1:100, function(b){
-    apply(diff[,sample(1:5,replace = TRUE)],1,function(X){t.test(X)$statistic})
+boot <- pbapply::pbsapply(1:20, function(b){
+  sColumn <- sample(1:5,replace = TRUE)
+  if(length(unique(sColumn)) > 1){
+   apply(diff[,sColumn],1,function(X){t.test(X)$statistic}) 
+  }
 })
 # p-Value
 pValues <- rowMeans(abs(boot) > abs(tStat))
