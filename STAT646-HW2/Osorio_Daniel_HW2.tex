@@ -151,31 +151,31 @@ as variables and features (rows) as replicates. Interpret the results.
 \begin{Sinput}
 > cGSE19533 <- t(scale(t(GSE19533)))
 > PC <- prcomp(t(cGSE19533))
-> colors <- ifelse(test = rownames(PC$x) %in% paste0("GSM4870",seq(37,45,2)), 
-+        yes = "blue", 
-+        no = "red")
+> colors <- ifelse(
++   test = rownames(PC$x) %in% paste0("GSM4870",seq(37,45,2)), 
++   yes = "blue", 
++   no = "red")
 > par(mfrow=c(1,2), mar=c(3,3,1,1), mgp=c(1.5,0.5,0))
-> barplot(PC$sdev/sum(PC$sdev))
-> plot(PC$x[,1:2], col = colors)
+> barplot(PC$sdev/sum(PC$sdev), ylab = "% Variability Explained")
+> plot(PC$x[,1:2], col = colors, pch = 16)
 \end{Sinput}
 \end{Schunk}
 \includegraphics{Osorio_Daniel_HW2-008}
+\\\textit{The first two principal components explain the 21\% and the 15\% of the variability respectively.}
 \item Carry out singular value decomposition of the column-centered intensities. Interpret the
 results.
 \begin{Schunk}
 \begin{Sinput}
 > SVD <- svd(t(scale(GSE19533)))
-> round((SVD$d^2)/sum(SVD$d^2),2)
-\end{Sinput}
-\begin{Soutput}
- [1] 0.96 0.01 0.01 0.00 0.00 0.00 0.00 0.00 0.00 0.00
-\end{Soutput}
-\begin{Sinput}
-> plot(SVD$v[,1])
-> plot(SVD$u[,1])
+> par(mfrow=c(1,2), mar=c(3,3,1,1), mgp=c(1.5,0.5,0))
+> barplot((SVD$d^2)/sum(SVD$d^2), ylab = "% Variability Explained")
+> plot(SVD$u[,1], col= colors, pch =16, ylim = c(-0.33,-0.295), xlim = c(0.5,10))
+> text(x = 1:10-0.2, y =SVD$u[,1] + 0.002, 
++      colnames(cGSE19533),pos = 1, srt = 90)
 \end{Sinput}
 \end{Schunk}
 \includegraphics{Osorio_Daniel_HW2-009}
+\\\textit{This pattern explains the 96\% of the variability. Sample GSM487042 is the most different one.}
 \item Compute one-sample t-statistics for each gene to search for features for which the mean
 paired difference is not 0. Use the bootstrap to obtain p-values. Use p.adjust to translate
 the p-values to FDR estimates (specify argument method = ‘fdr’). How many features

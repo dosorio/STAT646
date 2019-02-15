@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  13 FEB 2019 19:19
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  14 FEB 2019 17:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -546,19 +546,19 @@ Package pdftex.def Info: Osorio_Daniel_HW2-007.pdf  used on input line 146.
 <Osorio_Daniel_HW2-008.pdf, id=33, 722.7pt x 361.35pt>
 File: Osorio_Daniel_HW2-008.pdf Graphic file (type pdf)
 <use Osorio_Daniel_HW2-008.pdf>
-Package pdftex.def Info: Osorio_Daniel_HW2-008.pdf  used on input line 162.
+Package pdftex.def Info: Osorio_Daniel_HW2-008.pdf  used on input line 163.
 (pdftex.def)             Requested size: 386.95897pt x 193.47748pt.
-<Osorio_Daniel_HW2-009.pdf, id=34, 722.7pt x 361.35pt>
+ [4 <./Osorio_Daniel_HW2-007.pdf> <./Osorio_Daniel_HW2-008.pdf>]
+<Osorio_Daniel_HW2-009.pdf, id=47, 722.7pt x 361.35pt>
 File: Osorio_Daniel_HW2-009.pdf Graphic file (type pdf)
 <use Osorio_Daniel_HW2-009.pdf>
-Package pdftex.def Info: Osorio_Daniel_HW2-009.pdf  used on input line 178.
+Package pdftex.def Info: Osorio_Daniel_HW2-009.pdf  used on input line 177.
 (pdftex.def)             Requested size: 386.95897pt x 193.47748pt.
- [4 <./Osorio_Daniel_HW2-007.pdf> <./Osorio_Daniel_HW2-008.pdf>] [5 <./Osorio_D
-aniel_HW2-009.pdf>]
+ [5 <./Osorio_Daniel_HW2-009.pdf>]
 (./Osorio_Daniel_HW2.aux) ) 
 Here is how much of TeX's memory you used:
  5070 strings out of 492649
- 71050 string characters out of 6129622
+ 71046 string characters out of 6129622
  144238 words of memory out of 5000000
  8819 multiletter control sequences out of 15000+600000
  31045 words of font info for 63 fonts, out of 8000000 for 9000
@@ -571,7 +571,7 @@ msfonts/cm/cmsltt10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/
 amsfonts/cm/cmssbx10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public
 /amsfonts/cm/cmti12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/
 amsfonts/cm/cmtt12.pfb>
-Output written on Osorio_Daniel_HW2.pdf (5 pages, 3066054 bytes).
+Output written on Osorio_Daniel_HW2.pdf (5 pages, 118002 bytes).
 PDF statistics:
  76 PDF objects out of 1000 (max. 8388607)
  51 compressed objects within 1 object stream
