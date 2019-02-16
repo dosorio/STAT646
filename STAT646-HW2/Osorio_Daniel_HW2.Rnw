@@ -153,17 +153,25 @@ diff <- GSE19533[,pos] - GSE19533[,pre]
 tStat <- apply(diff,1,function(X){t.test(X)$statistic})
 # Centering the values to make simulation under the null hypothesis
 diff <- t(scale(t(diff)))
+n <- nrow(diff)
 # Bootstrap
-boot <- pbapply::pbsapply(1:20, function(b){
+boot <- sapply(1:100, function(b){
   sColumn <- sample(1:5,replace = TRUE)
   if(length(unique(sColumn)) > 1){
-   apply(diff[,sColumn],1,function(X){t.test(X)$statistic}) 
+    apply(diff[,sColumn],1,function(X){t.test(X)$statistic})
+  } else {
+    rep(NA, n)
   }
 })
+@
+<<>>=
 # p-Value
-pValues <- rowMeans(abs(boot) > abs(tStat))
+pValues <- rowMeans(abs(boot) > abs(tStat), na.rm = TRUE)
+@
+<<>>=
 # How many features are significant at an estimated FDR of 0.05?
-sum(p.adjust(pValues, method = "fdr") < 0.05)
+pValues <- p.adjust(pValues, method = "fdr")
+sum(pValues < 0.05)
 @
 \end{enumerate}
 \end{enumerate}
