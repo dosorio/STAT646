@@ -71,7 +71,7 @@ abline(v = 71.35, lty = 2, col= "red")
 \textit{The clusters are mainly driven by the strain type, fuel (10) samples are always clustered together as well as the wine’s (4) samples, depending on the linkage method, the association between strains is recovered differentially.}
 \end{enumerate}
 \item Carry out K-means clustering, with K = 3. How do the results compare to the hierarchical clustering results you obtained using average linkage? \textit{Main clusters are recovered identically}
-<<fig=TRUE, height=5, width=10>>=
+<<fig=TRUE, height=5.5, width=10>>=
 avgHclust <- as.dendrogram(avgHclust)
 set.seed(11)
 K <- kmeans(distanceMatrix, centers = 3)
@@ -104,51 +104,46 @@ GSE19533 <- read.csv(file = "GDS4308_full.soft",
                      sep = "\t", skip = 122, 
                      comment.char = "!")
 GSE19533 <- log2(GSE19533[,3:12])
+pre <- paste0("GSM4870", seq(37,45,2))
+pos <- paste0("GSM4870", seq(36,44,2))
+diff <- GSE19533[,pos] - GSE19533[,pre]
 @
 \begin{enumerate}
 \item Carry out hierarchical clustering of the individuals, using Euclidean distance and complete linkage. Interpret the results.
-<<fig=TRUE, height=5, width=10>>=
-dGSE19533 <- dist(t(GSE19533))
+<<fig=TRUE, height=5.5, width=10>>=
+dGSE19533 <- dist(t(diff))
 hc <- hclust(dGSE19533, method = "complete")
 par(mar=c(3,15,1,15))
 plot(as.dendrogram(hc), horiz = TRUE)
 @
-\\\textit{Clusters are driven by the state of the surgery, pre- and post- surgery samples are mainly clustered together.}
+\\\textit{They are clustered by age, ((((78,71),76),56),54)}
 \item Carry out a principal component analysis of the intensities, treating individuals (columns)
 as variables and features (rows) as replicates. Interpret the results.
-<<fig=TRUE,height=5, width=10>>=
-cGSE19533 <- t(scale(t(GSE19533)))
-PC <- prcomp(t(cGSE19533))
-colors <- ifelse(
-  test = rownames(PC$x) %in% paste0("GSM4870",seq(37,45,2)), 
-  yes = "blue", 
-  no = "red")
-par(mfrow=c(1,2), mar=c(3,3,1,1), mgp=c(1.5,0.5,0))
-barplot(PC$sdev/sum(PC$sdev), ylab = "% Variability Explained")
-plot(PC$x[,1:2], col = colors, pch = 16)
+<<fig=TRUE,height=5.5, width=10>>=
+cGSE19533 <- t(scale(t(diff), center = TRUE, scale = FALSE))
+PC <- prcomp(cGSE19533)
+par(mar=c(3,15,1,15))
+barplot(PC$sdev ^ 2 / sum(PC$sdev ^ 2), 
+        ylab = "% Variability Explained", 
+        ylim=c(0,1))
 @
-\\\textit{The first two principal components explain the 21\% and the 15\% of the variability respectively.}
+\\\textit{The first two principal components explain the 59\% and the 17\% of the variability respectively.}
 \item Carry out singular value decomposition of the column-centered intensities. Interpret the
 results.
 <<fig=TRUE, height=5, width=10>>=
-SVD <- svd(t(scale(GSE19533)))
-par(mfrow=c(1,2), mar=c(3,3,1,1), mgp=c(1.5,0.5,0))
-barplot((SVD$d^2)/sum(SVD$d^2), ylab = "% Variability Explained")
-plot(SVD$u[,1], col= colors, pch =16, 
-     ylim = c(-0.33,-0.295), xlim = c(0.5,10))
-text(x = 1:10-0.2, y =SVD$u[,1] + 0.002, 
-     colnames(cGSE19533),pos = 1, srt = 90)
+SVD <- svd(cGSE19533)
+par(mar=c(3,15,1,15))
+barplot((SVD$d^2)/sum(SVD$d^2), 
+        ylab = "% Variability Explained",
+        ylim=c(0,1))
 @
-\\\textit{This pattern explains the 96\% of the variability. Sample GSM487042 is the most different one.}
+\\\textit{The results are almost identical to the obtained by PCA}
 \item Compute one-sample t-statistics for each gene to search for features for which the mean
 paired difference is not 0. Use the bootstrap to obtain p-values. Use p.adjust to translate
 the p-values to FDR estimates (specify argument method = ‘fdr’). How many features
 are significant at an estimated FDR of 0.05? I will give tips on R code for this problem
 in class and Q\&A.
 <<>>=
-pre <- paste0("GSM4870", seq(37,45,2))
-pos <- paste0("GSM4870", seq(36,44,2))
-diff <- GSE19533[,pos] - GSE19533[,pre]
 # Statistic under the original values
 tStat <- apply(diff,1,function(X){t.test(X)$statistic})
 # Centering the values to make simulation under the null hypothesis
