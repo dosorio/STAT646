@@ -34,7 +34,9 @@ barplot(counts,  xlab ="# of breachers", col=c("red","black"), legend=c("TBI=no"
 dev.off()
 
 ##-------------------------------
-snps <- getSnpBeta(rgset); colnames(snps); match(colnames(snps),paste0(targets$Slide,"_",targets$Array)); 
+snps <- getSnpBeta(rgset); 
+colnames(snps); 
+match(colnames(snps),paste0(targets$Slide,"_",targets$Array)); 
 colnames(snps)<-targets[,1]; colnames(snps); 
 x<-dist(t(snps), method = "manhattan");
 hc<-hclust(x, method = "single");
@@ -85,7 +87,7 @@ dev.off()
 ##-------promoter region plot--------------------------------------------------------------------
 positioninfo<-annotation$UCSC_RefGene_Group
 probename<-annotation$Name
-selected_probe<-which(probename  %in%selected_cpgsitebreacher )
+selected_probe<- which(probename  %in%selected_cpgsitebreacher )
 position_selected<-positioninfo[selected_probe]
 countTSS=sum(grepl("TSS",position_selected))
 count5UTR=sum(grepl("5'UTR",position_selected))
@@ -172,7 +174,8 @@ plot(top_breacher$logFC, -log10(top_breacher$P.Value),
 
 
 #####-----sexplot----####
-RSet <- ratioConvert(mset_raw, what = "both", keepCN = TRUE)
+RSet <- ratioConvert(mSet, what = "both", keepCN = TRUE)
+beta_raw <- getBeta(RSet)
 GRset <- mapToGenome(RSet)
 xIndex <- which(seqnames(GRset) == "chrX")
 yIndex <- which(seqnames(GRset) == "chrY")
@@ -181,15 +184,14 @@ yMed <- matrixStats::colMedians(beta_raw[yIndex,], na.rm=TRUE)
 x.m <- xMed
 y.m <- yMed
 require("car")
-z<-recode(pheno[,4], "c('F')='1'; else='0'")
+z<-recode(bL[,4], "c('F')='1'; else='0'")
 zz<-as.factor(z)
-pdf("/hpc/users/karmam01/AMD_old/sex2.pdf",width=11,height=8.5)
 par(mar=c(7,4,4,2))
-plot(c(1,nrow(pheno)),c(-1,1),type="n",axes=FALSE,xlab="",ylab="",
+plot(c(1,nrow(bL)),c(-1,1),type="n",axes=FALSE,xlab="",ylab="",
 main="The median beta values for the XY chromosomes")
-points(1:48,x.m,pch=20)
-points(1:48,-y.m,pch=20)
-axis(1,1:48, pheno[,1] ,las=2,cex=0.6)
+points(1:31,x.m,pch=20)
+points(1:31,-y.m,pch=20)
+axis(1,1:31, bL[,1] ,las=2,cex=0.6)
 at<-c(0,0.2,0.4,0.6,0.8,1.0)
 axis(2,at=c(at,-at[-1]),c(at,at[-1]))
 abline(h=0)
@@ -197,5 +199,4 @@ mtext("chrX median beta",2,line=2,at=0.5,adj=0.5)
 mtext("ChrY median beta",2,line=2,at=-0.5,adj=0.5)
 box()
 segments(c(1:48),-y.m,y1=x.m,col=c("forestgreen","red")[zz])
-dev.off()
 
