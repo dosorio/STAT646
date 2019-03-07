@@ -1,0 +1,128 @@
+\documentclass[12pt,a4paper]{paper}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\begin{document}
+\title{STAT646 - Exam 1\\\small{Daniel Osorio - dcosorioh@tamu.edu\\Department of Veterinary Integrative Biosciences\\Texas A\&M University}}
+\maketitle
+\SweaveOpts{concordance=TRUE}
+\begin{enumerate}
+\item State the Central Dogma of Molecular Biology in your own words. \textit{The central dogma of molecular biology states that DNA produces RNA and RNA make proteins.  The first event occurs in a process called transcription, and the second during a process called translation.}
+\item The exam 1 data on eCampus come from Affimetrix gene expression microarrays on human cells (of a particular type) under two conditions. The data were obtained from GEO. There are 8 arrays. Cells from 2 donors were used. For each donor, cells of two types (Th17 and Treg) were isolated. Representatives of each cell type were subjected to either a treatment or control condition. Table 1 summarizes the meta information for these data.
+<<>>=
+data <- read.csv("exam_1.csv")
+@
+\begin{enumerate}
+\item Carry out cluster analysis to explore structure among the arrays (columns), using Euclidean distance and complete linkage.
+<<>>=
+distanceMatrix <- dist(t(data), method = "euclidean")
+clusteringR <- hclust(distanceMatrix, method = "complete")
+@
+\begin{enumerate}
+\item Provide the dendrogram and the plot of merge heights.
+<<fig=TRUE, width=11, height=4>>=
+par(mfrow=c(1,2), mar=c(2.5,2.5,1,1), mgp = c(1.5,0.5,0))
+plot(clusteringR$height, ylim=c(70,110))
+abline(h = 105, col= "red", lty = 2)
+plot(clusteringR, ylim=c(70,110))
+abline(h = 105, col= "red", lty = 2)
+@
+\item How many clusters would you say there are, and why? \textit{From the height plot, there are two main clusters given by the high separation between the last point and the others. However, from the cluster plot is evident that inside these two there are other two subclusters.}
+\item How would you explain the apparent clustering? \textit{Main clusters are formed by cell type (Th17 and Treg) and the clusters inside are driven by the donor.}
+\end{enumerate}
+\item Carry out principal component analysis to explore structure among the arrays (columns)
+<<>>=
+PC <- prcomp(t(data))
+@
+\begin{enumerate}
+\item Should you standardize or not? Does it matter in this case? In what follows, so we all match answers, do not standardize the columns. \textit{As all the columns seem to have approximately the same variability, it's not required to standardize the columns. See below:}
+<<>>=
+apply(data,2,var)
+@
+
+\item What is the proportion of total variance explained by the first principal component? By the second principal component?
+<<>>=
+summary(PC)$importance[,1:2]
+@
+\item What are the coefficients that define the first principal component’s linear combination of the columns (in other words, what is the first eigenvector of the $8 \times 8$ sample covariance matrix)? Comment. What do these tell you, if anything, about the data? \textit{The coefficients of this eigenvector split the samples by cell types in the same way as the cluster analysis. All the Th17 have negative values meanwhile all Treg have positive ones.}
+<<>>=
+PC$x[,1]
+@
+\item Provide a scatterplot of the first two principal components. Comment. Are there any inter- esting patterns, clustering, outliers? If so, how would you explain them? \textit{As well as in cluster analysis there are two main clusters in the PC1 driven by the cell type and other two in the PC2 driven by the donor.}
+<<fig=TRUE, width=11, height=4>>=
+par(mar=c(2.5,2.5,1,1), mgp = c(1.5,0.5,0))
+plot(PC$x[,1:2])
+@
+\end{enumerate}
+\item Use two-sample t-tests (assuming unequal variances, the default in R) to test for diffrential expression between the 4 treatment and 4 control arrays
+<<>>=
+isControl <- grepl("co", colnames(data))
+diffM <- data[,isControl] - data[,!isControl]
+pValues  <- apply(diffM, 1, function(X){
+  t.test(X)$p.value
+})
+@
+\begin{enumerate}
+\item Report a histogram of the p-values. Comment on its shape (does it look as you would expect, are there any worrisome features, do there appear to be many genes for which mean expression differs between control and treatment conditions). \textit{Distribution is uniform. There appear to be less differentially expressed genes than the expected by chance. }
+<<fig=TRUE, width=11, height=4>>=
+par(mar=c(2.5,2.5,1,1), mgp = c(1.5,0.5,0))
+hist(pValues, probability = TRUE)
+abline(v = 0.05, col = "red", lty = 2)
+@
+\item If none of the genes were differentially expressed, what proportion of the p-values would you expect to be <0.05? \textit{Approximately 5\%} What proportion of p-values are <0.05? \textit{Around 4.5\%} What does this tell you about whether there are many genes for which mean expression differs between control and treatment conditions? \textit{There is not enough evidence supporting a difference between treatment and control samples.}
+<<>>=
+mean(pValues < 0.05)
+@
+\item Convert the p-values to q-values using p.adjust (use method = “fdr”). How many genes do you call differentially expressed at an estimated FDR of 0.05? \textit{None}
+<<>>=
+table(p.adjust(pValues) < 0.05)
+@
+\end{enumerate}
+\item The MAX gene is present in multiple species. The versions of the gene in human, mouse are said to be homologous
+<<>>=
+library(seqinr)
+choosebank("genbank")
+@
+\begin{enumerate}
+\item Consider the global alignment of the sequences of this gene in human (Homo sapiens) and mouse (Mus musculus). Use seqinr to download the DNA sequences. You will get multiple sequences for each species. Use third sequence (BC004516.MAX) for human and first sequence (BC138671.MAX) for mouse to answer the following questions. The lengths of the human and mouse sequences will be the same.
+<<>>=
+hsaMAX <- query(listname="MAX", query="SP=Homo sapiens AND K=MAX")
+hsaMAX <- getSequence(hsaMAX$req[[3]])
+mmusMAX <- query(listname="MAX", query="SP=Mus musculus AND K=MAX")
+mmusMAX <- getSequence(mmusMAX$req[[1]])
+@
+\begin{enumerate}
+\item Comparing the human and mouse versions of MAX, what proportion of bases dffer? \textit{Approximately 4\%}
+<<>>=
+mean(hsaMAX != mmusMAX)
+@
+\item Compare the human and mouse versions of MAX with respect to GC content of the bases? \textit{Their proportions of GC contents are almost identical around the 50\%}
+<<>>=
+sum(table(hsaMAX)[c("g","c")])/length(hsaMAX)
+sum(table(mmusMAX)[c("c","g")])/length(mmusMAX)
+@
+\end{enumerate}
+\item Consider the global alignment of these two DNA sequences: GAG and GTAG. Let the score for a match be +1, the score for a mismatch be -1, and the score for a gap be -2 . Write down the score matrix for this alignment, and fill in all of the cells. (Note: you do not have to find me any alignment just fill out the score matrix i.e each cell value with direction.)
+\begin{center}
+\begin{tabular}{|p{0.5cm}|p{0.5cm}|p{0.5cm}|p{0.5cm}|p{0.5cm}|p{0.5cm}|}
+\hline
+&&&&&\\[10pt]
+\hline
+&&&&& \\[10pt]
+\hline
+&&&&& \\[10pt]
+\hline
+&&&&& \\[10pt]
+\hline
+&&&&& \\[10pt]
+\hline
+\end{tabular}
+\end{center}
+\end{enumerate}
+\end{enumerate}
+\end{enumerate}
+\end{document}
