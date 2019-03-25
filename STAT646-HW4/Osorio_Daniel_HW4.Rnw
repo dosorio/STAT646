@@ -160,7 +160,7 @@ boxplot(qcData[qcData$is_qc == 0,8:19])
 \item For each of the Salmonella peptides, compute a two-sample t-test, assuming equal variances, comparing the first comparison group (highest concentration of QC proteins) to the third comparison group (lowest concentration of QC proteins).
 <<>>=
 pValues <- apply(qcData[qcData$is_qc == 0,], 1, function(X){
-  t.test(as.numeric(X[g0]),as.numeric(X[g2]))$p.value
+  t.test(as.numeric(X[g0]),as.numeric(X[g2]),var.equal = TRUE)$p.value
 })
 @
 \begin{enumerate}
@@ -168,10 +168,10 @@ pValues <- apply(qcData[qcData$is_qc == 0,], 1, function(X){
 <<fig=TRUE,width=10, height=3>>=
 par(mar=c(2.5,2.5,1,1), mgp=c(1.5,0.5,0))
 hist(pValues, probability = TRUE,breaks = 20, main = "P Values")
-abline(v=0.05, lty=2, col="red")
+abline(v=0.05, lty=2, col="red", lwd = 2)
 @
 \item What proportion of the Salmonella peptides had p-values < 0.05? What proportion
-of the Salmonella peptides did you expect to have p-values < 0.05? \textit{By chance I expect to have 0.05\% of p-values < 0.05}
+of the Salmonella peptides did you expect to have p-values < 0.05? \textit{By chance I expect to have 5\% of p-values < 0.05}
 <<>>=
 mean(pValues < 0.05)
 @

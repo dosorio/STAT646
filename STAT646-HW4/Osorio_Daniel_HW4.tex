@@ -205,23 +205,23 @@ http://www.drive5.com/muscle
 This software is donated to the public domain.
 Please cite: Edgar, R.C. Nucleic Acids Res 32(5), 1792-97.
 
-file1866629fa9cc7 3 seqs, max length 50, avg  length 50
-287 MB(7%)00:00:00                Iter   1   16.67%  K-mer dist pass 1
-287 MB(7%)00:00:00                Iter   1  100.00%  K-mer dist pass 1
-287 MB(7%)00:00:00                Iter   1   16.67%  K-mer dist pass 2
-287 MB(7%)00:00:00                Iter   1  100.00%  K-mer dist pass 2
-287 MB(7%)00:00:00                Iter   1   50.00%  Align node       
-287 MB(7%)00:00:00                Iter   1  100.00%  Align node
-287 MB(7%)00:00:00                Iter   1  100.00%  Align node
-287 MB(7%)00:00:00                Iter   1   33.33%  Root alignment
-287 MB(7%)00:00:00                Iter   1   66.67%  Root alignment
-287 MB(7%)00:00:00                Iter   1  100.00%  Root alignment
-287 MB(7%)00:00:00                Iter   1  100.00%  Root alignment
-287 MB(7%)00:00:00                Iter   2  100.00%  Root alignment
-287 MB(7%)00:00:00                Iter   3   66.67%  Refine biparts
-287 MB(7%)00:00:00                Iter   3  100.00%  Refine biparts
-287 MB(7%)00:00:00                Iter   3  133.33%  Refine biparts
-287 MB(7%)00:00:00                Iter   3  100.00%  Refine biparts
+file1e767bcea0b 3 seqs, max length 50, avg  length 50
+138 MB(3%)00:00:00                Iter   1   16.67%  K-mer dist pass 1
+138 MB(3%)00:00:00                Iter   1  100.00%  K-mer dist pass 1
+138 MB(3%)00:00:00                Iter   1   16.67%  K-mer dist pass 2
+138 MB(3%)00:00:00                Iter   1  100.00%  K-mer dist pass 2
+138 MB(3%)00:00:00                Iter   1   50.00%  Align node       
+139 MB(3%)00:00:00                Iter   1  100.00%  Align node
+139 MB(3%)00:00:00                Iter   1  100.00%  Align node
+139 MB(3%)00:00:00                Iter   1   33.33%  Root alignment
+139 MB(3%)00:00:00                Iter   1   66.67%  Root alignment
+139 MB(3%)00:00:00                Iter   1  100.00%  Root alignment
+139 MB(3%)00:00:00                Iter   1  100.00%  Root alignment
+139 MB(3%)00:00:00                Iter   2  100.00%  Root alignment
+139 MB(3%)00:00:00                Iter   3   66.67%  Refine biparts
+139 MB(3%)00:00:00                Iter   3  100.00%  Refine biparts
+139 MB(3%)00:00:00                Iter   3  133.33%  Refine biparts
+139 MB(3%)00:00:00                Iter   3  100.00%  Refine biparts
 DNAMultipleAlignment with 3 rows and 50 columns
      aln
 [1] ATGACCGAGAATTCCACGTCCGCCCCTGCGGCCAAGCCCAAGCGGGCCAA
@@ -276,7 +276,7 @@ DNAMultipleAlignment with 3 rows and 50 columns
 \begin{Schunk}
 \begin{Sinput}
 > pValues <- apply(qcData[qcData$is_qc == 0,], 1, function(X){
-+   t.test(as.numeric(X[g0]),as.numeric(X[g2]))$p.value
++   t.test(as.numeric(X[g0]),as.numeric(X[g2]),var.equal = TRUE)$p.value
 + })
 \end{Sinput}
 \end{Schunk}
@@ -286,18 +286,18 @@ DNAMultipleAlignment with 3 rows and 50 columns
 \begin{Sinput}
 > par(mar=c(2.5,2.5,1,1), mgp=c(1.5,0.5,0))
 > hist(pValues, probability = TRUE,breaks = 20, main = "P Values")
-> abline(v=0.05, lty=2, col="red")
+> abline(v=0.05, lty=2, col="red", lwd = 2)
 \end{Sinput}
 \end{Schunk}
 \includegraphics{Osorio_Daniel_HW4-017}
 \item What proportion of the Salmonella peptides had p-values < 0.05? What proportion
-of the Salmonella peptides did you expect to have p-values < 0.05? \textit{By chance I expect to have 0.05\% of p-values < 0.05}
+of the Salmonella peptides did you expect to have p-values < 0.05? \textit{By chance I expect to have 5\% of p-values < 0.05}
 \begin{Schunk}
 \begin{Sinput}
 > mean(pValues < 0.05)
 \end{Sinput}
 \begin{Soutput}
-[1] 0.09923664
+[1] 0.1280094
 \end{Soutput}
 \end{Schunk}
 \end{enumerate}
