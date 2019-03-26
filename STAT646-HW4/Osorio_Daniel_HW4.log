@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  24 MAR 2019 21:29
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  25 MAR 2019 20:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1280,53 +1280,59 @@ File: ts1cmtt.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 LaTeX Font Info:    Font shape `TS1/aett/m/sl' in size <12> not available
 (Font)              Font shape `TS1/cmtt/m/sl' tried instead on input line 128.
 
- [2]
-<Osorio_Daniel_HW4-010.pdf, id=43, 722.7pt x 361.35pt>
-File: Osorio_Daniel_HW4-010.pdf Graphic file (type pdf)
-<use Osorio_Daniel_HW4-010.pdf>
-Package pdftex.def Info: Osorio_Daniel_HW4-010.pdf  used on input line 188.
-(pdftex.def)             Requested size: 386.95897pt x 193.47748pt.
- [3 <./Osorio_Daniel_HW4-010.pdf>] [4]
-<Osorio_Daniel_HW4-014.pdf, id=57, 722.7pt x 216.81pt>
-File: Osorio_Daniel_HW4-014.pdf Graphic file (type pdf)
-<use Osorio_Daniel_HW4-014.pdf>
-Package pdftex.def Info: Osorio_Daniel_HW4-014.pdf  used on input line 266.
+ [2] [3]
+<Osorio_Daniel_HW4-009.pdf, id=47, 722.7pt x 216.81pt>
+File: Osorio_Daniel_HW4-009.pdf Graphic file (type pdf)
+<use Osorio_Daniel_HW4-009.pdf>
+Package pdftex.def Info: Osorio_Daniel_HW4-009.pdf  used on input line 205.
 (pdftex.def)             Requested size: 386.95897pt x 116.08649pt.
-<Osorio_Daniel_HW4-015.pdf, id=58, 722.7pt x 216.81pt>
-File: Osorio_Daniel_HW4-015.pdf Graphic file (type pdf)
-<use Osorio_Daniel_HW4-015.pdf>
-Package pdftex.def Info: Osorio_Daniel_HW4-015.pdf  used on input line 274.
+<Osorio_Daniel_HW4-013.pdf, id=48, 722.7pt x 216.81pt>
+File: Osorio_Daniel_HW4-013.pdf Graphic file (type pdf)
+<use Osorio_Daniel_HW4-013.pdf>
+Package pdftex.def Info: Osorio_Daniel_HW4-013.pdf  used on input line 249.
 (pdftex.def)             Requested size: 386.95897pt x 116.08649pt.
- [5 <./Osorio_Daniel_HW4-014.pdf> <./Osorio_Daniel_HW4-015.pdf>]
-<Osorio_Daniel_HW4-017.pdf, id=72, 722.7pt x 216.81pt>
-File: Osorio_Daniel_HW4-017.pdf Graphic file (type pdf)
-<use Osorio_Daniel_HW4-017.pdf>
-Package pdftex.def Info: Osorio_Daniel_HW4-017.pdf  used on input line 292.
+ [4 <./Osorio_Daniel_HW4-009.pdf> <./Osorio_Daniel_HW4-013.pdf>] [5]
+<Osorio_Daniel_HW4-018.pdf, id=67, 722.7pt x 216.81pt>
+File: Osorio_Daniel_HW4-018.pdf Graphic file (type pdf)
+<use Osorio_Daniel_HW4-018.pdf>
+Package pdftex.def Info: Osorio_Daniel_HW4-018.pdf  used on input line 341.
 (pdftex.def)             Requested size: 386.95897pt x 116.08649pt.
- [6 <./Osorio_Daniel_HW4-017.pdf>] (./Osorio_Daniel_HW4.aux) ) 
+<Osorio_Daniel_HW4-019.pdf, id=68, 722.7pt x 216.81pt>
+File: Osorio_Daniel_HW4-019.pdf Graphic file (type pdf)
+<use Osorio_Daniel_HW4-019.pdf>
+Package pdftex.def Info: Osorio_Daniel_HW4-019.pdf  used on input line 349.
+(pdftex.def)             Requested size: 386.95897pt x 116.08649pt.
+ [6 <./Osorio_Daniel_HW4-018.pdf>]
+<Osorio_Daniel_HW4-021.pdf, id=77, 722.7pt x 216.81pt>
+File: Osorio_Daniel_HW4-021.pdf Graphic file (type pdf)
+<use Osorio_Daniel_HW4-021.pdf>
+Package pdftex.def Info: Osorio_Daniel_HW4-021.pdf  used on input line 367.
+(pdftex.def)             Requested size: 386.95897pt x 116.08649pt.
+ [7 <./Osorio_Daniel_HW4-019.pdf> <./Osorio_Daniel_HW4-021.pdf>]
+(./Osorio_Daniel_HW4.aux) ) 
 Here is how much of TeX's memory you used:
- 25925 strings out of 492649
- 527928 string characters out of 6129622
- 534528 words of memory out of 5000000
- 29360 multiletter control sequences out of 15000+600000
+ 25930 strings out of 492649
+ 528096 string characters out of 6129622
+ 535528 words of memory out of 5000000
+ 29364 multiletter control sequences out of 15000+600000
  565352 words of font info for 99 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 55i,8n,67p,10386b,576s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texli
-ve/2018/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/local/texliv
-e/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive
-/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2
-018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/201
-8/texmf-dist/fonts/type1/public/amsfonts/cm/cmsltt10.pfb></usr/local/texlive/20
-18/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/local/texlive/2
-018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/20
-18/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/201
-8/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texlive/2018
-/texmf-dist/fonts/type1/public/cm-super/sfst1200.pfb>
-Output written on Osorio_Daniel_HW4.pdf (6 pages, 1368169 bytes).
+ 55i,8n,67p,10386b,664s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2018/texmf-dist/fonts/enc/dvips/
+cm-super/cm-super-ts1.enc}</usr/local/texlive/2018/texmf-dist/fonts/type1/publi
+c/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmr10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmr12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/ams
+fonts/cm/cmsltt10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmssbx10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmsy10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmti12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/ams
+fonts/cm/cmtt12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/cm-s
+uper/sfst1200.pfb>
+Output written on Osorio_Daniel_HW4.pdf (7 pages, 1371322 bytes).
 PDF statistics:
- 113 PDF objects out of 1000 (max. 8388607)
- 70 compressed objects within 1 object stream
+ 125 PDF objects out of 1000 (max. 8388607)
+ 79 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 133 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 138 words of extra memory for PDF output out of 10000 (max. 10000000)
 

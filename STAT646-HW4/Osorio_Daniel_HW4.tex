@@ -148,9 +148,70 @@ score: 19
 \end{Schunk}
 \item Verify the overall scores for these alignments.
 \item Use the randomization-based significance test we used in class to assess the local alignment of the two amino acid sequences:
+\begin{Schunk}
+\begin{Sinput}
+> alignP <- function(seq_1, seq_2, scoringMat, gapOpen, gapExtend, B) {
++   gen_random_seqs <- function(sq, B) {
++     sq <- strsplit(sq, "")[[1]]
++     n <- length(sq)
++     sq_tbl <- table(sq)
++     sq_letters <- names(sq_tbl)
++     n_letters <- length(sq_letters)
++     pp <- numeric()
++     for(i in 1:length(sq_letters)) 
++       pp[i] <- sq_tbl[i] / n
++     sqs <- numeric(B)
++     for(i in 1:B) 
++       sqs[i] <- paste(sample(sq_letters, n, rep = TRUE, prob = pp), 
++                       collapse = "")
++     return(sqs)
++   }    
++   tt_0 <- pairwiseAlignment(seq_1, seq_2, 
++                             substitutionMatrix = scoringMat, 
++                             gapOpening = gapOpen, 
++                             gapExtension = gapExtend, 
++                             type = "global", 
++                             scoreOnly = TRUE)
++   random_seqs <- gen_random_seqs(seq_1, B)
++   tt_B <- numeric(B)
++   for(i in 1:B) 
++     tt_B[i] <- pairwiseAlignment(random_seqs[i], seq_2, 
++                                  substitutionMatrix = scoringMat, 
++                                  gapOpening = gapOpen, 
++                                  gapExtension = gapExtend, 
++                                  type = "global", scoreOnly = TRUE)
++   p_val <- mean(tt_B >= tt_0)
++   return(list("tt_0" = tt_0, "tt_B" = tt_B, "p_val" = p_val))
++ }
+> alignT <- alignP(seq_1 = "ASEDLTI", seq_2 = "AEEDFGI", 
++                  scoringMat = "PAM30", gapOpen = 0, 
++                  gapExtend = -2, B = 1000)
+\end{Sinput}
+\end{Schunk}
 \begin{enumerate}
-\item Report a density plot of the randomization based alignment scores; use the den- sity function. Shade in the area under the density curve that corresponds to the randomization based scores that are $\ge$ our observed score of 19.
+\item Report a density plot of the randomization based alignment scores; use the density function. Shade in the area under the density curve that corresponds to the randomization based scores that are $\ge$ our observed score of 19.
+\begin{Schunk}
+\begin{Sinput}
+> par(mar=c(2.5,2.5,1,1), mgp=c(1.5,0.5,0))
+> dF <- density(alignT$tt_B)
+> plot(dF, main= "Randomization scores")
+> x1 <- min(which(dF$x >= 19))  
+> x2 <- which.max(dF$x)
+> with(dF, polygon(x=c(x[c(x1,x1:x2,x2)]), 
++                  y= c(0, y[x1:x2], 0), 
++                  col="skyblue"))
+\end{Sinput}
+\end{Schunk}
+\includegraphics{Osorio_Daniel_HW4-009}
 \item What is the resulting p-value?
+\begin{Schunk}
+\begin{Sinput}
+> alignT$p_val
+\end{Sinput}
+\begin{Soutput}
+[1] 0.029
+\end{Soutput}
+\end{Schunk}
 \end{enumerate}
 \end{enumerate}
 \item The H1F0 gene is present in multiple species. The versions of the gene in human, mouse, and cow are said to be homologous.
@@ -185,8 +246,21 @@ score: 19
 > dotPlot(humanH1F0,cowH1F0)
 \end{Sinput}
 \end{Schunk}
-\includegraphics{Osorio_Daniel_HW4-010}
+\includegraphics{Osorio_Daniel_HW4-013}
 \item Use the randomization-based significance test to assess the global alignment of H1F0 in human and mouse. What is the p-value?[ Use gap open = 0 and gap extend = -2]
+\begin{Schunk}
+\begin{Sinput}
+> mat <- nucleotideSubstitutionMatrix(match = 1, mismatch = -1, 
++                                     baseOnly = TRUE)
+> alignP(seq_1 = toupper(paste0(humanH1F0,collapse = "")),
++        seq_2 = toupper(paste0(cowH1F0,collapse = "")),
++        scoringMat = mat, gapOpen = 0, 
++        gapExtend = -2,B = 1000)$p_val
+\end{Sinput}
+\begin{Soutput}
+[1] 0
+\end{Soutput}
+\end{Schunk}
 \end{enumerate}
 \item Use the muscle package to carry out multiple alignment of H1F0 in human, mouse, and cow (bos taurus). Again, just use the first sequence returned by seqinr for each species. Report the first 50 aligned bases.
 \begin{Schunk}
@@ -195,7 +269,8 @@ score: 19
 > humanH1F0 <- paste0(humanH1F0[1:50], collapse = "")
 > mouseH1F0 <- paste0(mouseH1F0[1:50], collapse = "")
 > cowH1F0 <- paste0(cowH1F0[1:50], collapse = "")
-> H1F0 <- DNAStringSet(c(humanH1F0,mouseH1F0,cowH1F0))
+> H1F0 <- DNAStringSet(c(humanH1F0,mouseH1F0,cowH1F0), 
++                      use.names = TRUE)
 > muscle(H1F0)
 \end{Sinput}
 \begin{Soutput}
@@ -205,23 +280,23 @@ http://www.drive5.com/muscle
 This software is donated to the public domain.
 Please cite: Edgar, R.C. Nucleic Acids Res 32(5), 1792-97.
 
-file1e767bcea0b 3 seqs, max length 50, avg  length 50
-138 MB(3%)00:00:00                Iter   1   16.67%  K-mer dist pass 1
-138 MB(3%)00:00:00                Iter   1  100.00%  K-mer dist pass 1
-138 MB(3%)00:00:00                Iter   1   16.67%  K-mer dist pass 2
-138 MB(3%)00:00:00                Iter   1  100.00%  K-mer dist pass 2
-138 MB(3%)00:00:00                Iter   1   50.00%  Align node       
-139 MB(3%)00:00:00                Iter   1  100.00%  Align node
-139 MB(3%)00:00:00                Iter   1  100.00%  Align node
-139 MB(3%)00:00:00                Iter   1   33.33%  Root alignment
-139 MB(3%)00:00:00                Iter   1   66.67%  Root alignment
-139 MB(3%)00:00:00                Iter   1  100.00%  Root alignment
-139 MB(3%)00:00:00                Iter   1  100.00%  Root alignment
-139 MB(3%)00:00:00                Iter   2  100.00%  Root alignment
-139 MB(3%)00:00:00                Iter   3   66.67%  Refine biparts
-139 MB(3%)00:00:00                Iter   3  100.00%  Refine biparts
-139 MB(3%)00:00:00                Iter   3  133.33%  Refine biparts
-139 MB(3%)00:00:00                Iter   3  100.00%  Refine biparts
+file196f6bb325c 3 seqs, max length 50, avg  length 50
+334 MB(8%)00:00:00                Iter   1   16.67%  K-mer dist pass 1
+334 MB(8%)00:00:00                Iter   1  100.00%  K-mer dist pass 1
+334 MB(8%)00:00:00                Iter   1   16.67%  K-mer dist pass 2
+334 MB(8%)00:00:00                Iter   1  100.00%  K-mer dist pass 2
+334 MB(8%)00:00:00                Iter   1   50.00%  Align node       
+334 MB(8%)00:00:00                Iter   1  100.00%  Align node
+334 MB(8%)00:00:00                Iter   1  100.00%  Align node
+334 MB(8%)00:00:00                Iter   1   33.33%  Root alignment
+334 MB(8%)00:00:00                Iter   1   66.67%  Root alignment
+334 MB(8%)00:00:00                Iter   1  100.00%  Root alignment
+334 MB(8%)00:00:00                Iter   1  100.00%  Root alignment
+334 MB(8%)00:00:00                Iter   2  100.00%  Root alignment
+334 MB(8%)00:00:00                Iter   3   66.67%  Refine biparts
+334 MB(8%)00:00:00                Iter   3  100.00%  Refine biparts
+334 MB(8%)00:00:00                Iter   3  133.33%  Refine biparts
+334 MB(8%)00:00:00                Iter   3  100.00%  Refine biparts
 DNAMultipleAlignment with 3 rows and 50 columns
      aln
 [1] ATGACCGAGAATTCCACGTCCGCCCCTGCGGCCAAGCCCAAGCGGGCCAA
@@ -263,7 +338,7 @@ DNAMultipleAlignment with 3 rows and 50 columns
 > boxplot(qcData[qcData$is_qc == 1,8:19])
 \end{Sinput}
 \end{Schunk}
-\includegraphics{Osorio_Daniel_HW4-014}
+\includegraphics{Osorio_Daniel_HW4-018}
 \item Report side-by-side boxplots comparing the 12 samples, now for the Salmonella peptides.
 \begin{Schunk}
 \begin{Sinput}
@@ -271,7 +346,7 @@ DNAMultipleAlignment with 3 rows and 50 columns
 > boxplot(qcData[qcData$is_qc == 0,8:19])
 \end{Sinput}
 \end{Schunk}
-\includegraphics{Osorio_Daniel_HW4-015}
+\includegraphics{Osorio_Daniel_HW4-019}
 \item For each of the Salmonella peptides, compute a two-sample t-test, assuming equal variances, comparing the first comparison group (highest concentration of QC proteins) to the third comparison group (lowest concentration of QC proteins).
 \begin{Schunk}
 \begin{Sinput}
@@ -289,7 +364,7 @@ DNAMultipleAlignment with 3 rows and 50 columns
 > abline(v=0.05, lty=2, col="red", lwd = 2)
 \end{Sinput}
 \end{Schunk}
-\includegraphics{Osorio_Daniel_HW4-017}
+\includegraphics{Osorio_Daniel_HW4-021}
 \item What proportion of the Salmonella peptides had p-values < 0.05? What proportion
 of the Salmonella peptides did you expect to have p-values < 0.05? \textit{By chance I expect to have 5\% of p-values < 0.05}
 \begin{Schunk}

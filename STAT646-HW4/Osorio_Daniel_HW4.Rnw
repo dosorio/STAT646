@@ -89,9 +89,60 @@ pairwiseAlignment(pattern = "ASEDLTI", subject = "AEEDFGI",
 @
 \item Verify the overall scores for these alignments.
 \item Use the randomization-based significance test we used in class to assess the local alignment of the two amino acid sequences:
+<<>>=
+alignP <- function(seq_1, seq_2, scoringMat, gapOpen, gapExtend, B) {
+  gen_random_seqs <- function(sq, B) {
+    sq <- strsplit(sq, "")[[1]]
+    n <- length(sq)
+    sq_tbl <- table(sq)
+    sq_letters <- names(sq_tbl)
+    n_letters <- length(sq_letters)
+    pp <- numeric()
+    for(i in 1:length(sq_letters)) 
+      pp[i] <- sq_tbl[i] / n
+    sqs <- numeric(B)
+    for(i in 1:B) 
+      sqs[i] <- paste(sample(sq_letters, n, rep = TRUE, prob = pp), 
+                      collapse = "")
+    return(sqs)
+  }    
+  tt_0 <- pairwiseAlignment(seq_1, seq_2, 
+                            substitutionMatrix = scoringMat, 
+                            gapOpening = gapOpen, 
+                            gapExtension = gapExtend, 
+                            type = "global", 
+                            scoreOnly = TRUE)
+  random_seqs <- gen_random_seqs(seq_1, B)
+  tt_B <- numeric(B)
+  for(i in 1:B) 
+    tt_B[i] <- pairwiseAlignment(random_seqs[i], seq_2, 
+                                 substitutionMatrix = scoringMat, 
+                                 gapOpening = gapOpen, 
+                                 gapExtension = gapExtend, 
+                                 type = "global", scoreOnly = TRUE)
+  p_val <- mean(tt_B >= tt_0)
+  return(list("tt_0" = tt_0, "tt_B" = tt_B, "p_val" = p_val))
+}
+alignT <- alignP(seq_1 = "ASEDLTI", seq_2 = "AEEDFGI", 
+                 scoringMat = "PAM30", gapOpen = 0, 
+                 gapExtend = -2, B = 1000)
+@
 \begin{enumerate}
-\item Report a density plot of the randomization based alignment scores; use the den- sity function. Shade in the area under the density curve that corresponds to the randomization based scores that are $\ge$ our observed score of 19.
+\item Report a density plot of the randomization based alignment scores; use the density function. Shade in the area under the density curve that corresponds to the randomization based scores that are $\ge$ our observed score of 19.
+<<fig=TRUE,width=10, height=3>>=
+par(mar=c(2.5,2.5,1,1), mgp=c(1.5,0.5,0))
+dF <- density(alignT$tt_B)
+plot(dF, main= "Randomization scores")
+x1 <- min(which(dF$x >= 19))  
+x2 <- which.max(dF$x)
+with(dF, polygon(x=c(x[c(x1,x1:x2,x2)]), 
+                 y= c(0, y[x1:x2], 0), 
+                 col="skyblue"))
+@
 \item What is the resulting p-value?
+<<>>=
+alignT$p_val
+@
 \end{enumerate}
 \end{enumerate}
 \item The H1F0 gene is present in multiple species. The versions of the gene in human, mouse, and cow are said to be homologous.
@@ -113,11 +164,19 @@ cowH1F0 <- unlist(getSequence(cowH1F0$req[1]))
 mean(humanH1F0 != mouseH1F0)
 @
 \item Report a dot plot showing their alignment.
-<<fig=TRUE,width=10, height=5>>=
+<<fig=TRUE,width=10, height=3>>=
 par(mar=c(2.5,2.5,1,1), mgp=c(1.5,0.5,0))
 dotPlot(humanH1F0,cowH1F0)
 @
 \item Use the randomization-based significance test to assess the global alignment of H1F0 in human and mouse. What is the p-value?[ Use gap open = 0 and gap extend = -2]
+<<>>=
+mat <- nucleotideSubstitutionMatrix(match = 1, mismatch = -1, 
+                                    baseOnly = TRUE)
+alignP(seq_1 = toupper(paste0(humanH1F0,collapse = "")),
+       seq_2 = toupper(paste0(cowH1F0,collapse = "")),
+       scoringMat = mat, gapOpen = 0, 
+       gapExtend = -2,B = 1000)$p_val
+@
 \end{enumerate}
 \item Use the muscle package to carry out multiple alignment of H1F0 in human, mouse, and cow (bos taurus). Again, just use the first sequence returned by seqinr for each species. Report the first 50 aligned bases.
 <<>>=
@@ -125,7 +184,8 @@ library(muscle)
 humanH1F0 <- paste0(humanH1F0[1:50], collapse = "")
 mouseH1F0 <- paste0(mouseH1F0[1:50], collapse = "")
 cowH1F0 <- paste0(cowH1F0[1:50], collapse = "")
-H1F0 <- DNAStringSet(c(humanH1F0,mouseH1F0,cowH1F0))
+H1F0 <- DNAStringSet(c(humanH1F0,mouseH1F0,cowH1F0), 
+                     use.names = TRUE)
 muscle(H1F0)
 @
 \end{enumerate}
