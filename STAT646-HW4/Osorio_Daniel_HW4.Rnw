@@ -88,6 +88,15 @@ pairwiseAlignment(pattern = "ASEDLTI", subject = "AEEDFGI",
                   gapExtension = -2, type = "global")
 @
 \item Verify the overall scores for these alignments.
+<<>>=
+data(PAM30)
+PAM30["*",] <- -2
+PAM30[,"*"] <- -2
+sum(diag(PAM30[unlist(strsplit("AEEDFG*I", "")),
+               unlist(strsplit("ASEDL*TI", ""))]))
+sum(diag(PAM30[unlist(strsplit("ASEDL*TI", "")),
+               unlist(strsplit("AEEDFG*I", ""))]))
+@
 \item Use the randomization-based significance test we used in class to assess the local alignment of the two amino acid sequences:
 <<>>=
 alignP <- function(seq_1, seq_2, scoringMat, gapOpen, gapExtend, B) {
@@ -164,7 +173,7 @@ cowH1F0 <- unlist(getSequence(cowH1F0$req[1]))
 mean(humanH1F0 != mouseH1F0)
 @
 \item Report a dot plot showing their alignment.
-<<fig=TRUE,width=10, height=3>>=
+<<fig=TRUE,width=4, height=4>>=
 par(mar=c(2.5,2.5,1,1), mgp=c(1.5,0.5,0))
 dotPlot(humanH1F0,cowH1F0)
 @
