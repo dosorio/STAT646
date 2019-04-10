@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  28 MAR 2019 21:17
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  9 APR 2019 19:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**Osorio_Daniel_HW4.tex
-(./Osorio_Daniel_HW4.tex
+**Osorio_Daniel_HW5.tex
+(./Osorio_Daniel_HW5.tex
 LaTeX2e <2018-04-01> patch level 2
 Babel <3.18> and hyphenation patterns for 84 language(s) loaded.
 (/usr/local/texlive/2018/texmf-dist/tex/latex/paper/paper.cls
@@ -1063,8 +1063,8 @@ LaTeX Font Info:    Try loading font information for T1+aer on input line 105.
 (/usr/local/texlive/2018/texmf-dist/tex/latex/ae/t1aer.fd
 File: t1aer.fd 1997/11/16 Font definitions for T1/aer.
 ))))
-(./Osorio_Daniel_HW4.aux)
-\openout1 = `Osorio_Daniel_HW4.aux'.
+(./Osorio_Daniel_HW5.aux)
+\openout1 = `Osorio_Daniel_HW5.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 24.
 LaTeX Font Info:    ... okay on input line 24.
@@ -1256,7 +1256,7 @@ LaTeX Font Info:    Font shape `TS1/aer/m/n' in size <10> not available
 
 LaTeX Warning: No \author given.
 
-(./Osorio_Daniel_HW4-concordance.tex)
+(./Osorio_Daniel_HW5-concordance.tex)
 LaTeX Font Info:    Try loading font information for T1+aett on input line 41.
 
 (/usr/local/texlive/2018/texmf-dist/tex/latex/ae/t1aett.fd
@@ -1264,32 +1264,60 @@ File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
 ) [1
 
 
-{/usr/local/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (25.06473pt too wide) in paragraph at lines 89--92
+{/usr/local/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2]
+<Osorio_Daniel_HW5-005.pdf, id=43, 433.62pt x 289.08pt>
+File: Osorio_Daniel_HW5-005.pdf Graphic file (type pdf)
+<use Osorio_Daniel_HW5-005.pdf>
+Package pdftex.def Info: Osorio_Daniel_HW5-005.pdf  used on input line 154.
+(pdftex.def)             Requested size: 386.95897pt x 257.98615pt.
+ [3 <./Osorio_Daniel_HW5-005.pdf>]
+<Osorio_Daniel_HW5-009.pdf, id=53, 433.62pt x 216.81pt>
+File: Osorio_Daniel_HW5-009.pdf Graphic file (type pdf)
+<use Osorio_Daniel_HW5-009.pdf>
+Package pdftex.def Info: Osorio_Daniel_HW5-009.pdf  used on input line 210.
+(pdftex.def)             Requested size: 386.95897pt x 193.48961pt.
+
+Overfull \hbox (25.06473pt too wide) in paragraph at lines 211--215
 []\T1/aer/m/n/12 Carry out prin-ci-pal com-po-nent anal-y-sis to ex-plore struc
 -ture among the rats(columns).
  []
 
-[2] (./Osorio_Daniel_HW4.aux) ) 
+[4 <./Osorio_Daniel_HW5-009.pdf>]
+<Osorio_Daniel_HW5-010.pdf, id=64, 433.62pt x 144.54pt>
+File: Osorio_Daniel_HW5-010.pdf Graphic file (type pdf)
+<use Osorio_Daniel_HW5-010.pdf>
+Package pdftex.def Info: Osorio_Daniel_HW5-010.pdf  used on input line 230.
+(pdftex.def)             Requested size: 386.95897pt x 128.99306pt.
+<Osorio_Daniel_HW5-011.pdf, id=65, 433.62pt x 144.54pt>
+File: Osorio_Daniel_HW5-011.pdf Graphic file (type pdf)
+<use Osorio_Daniel_HW5-011.pdf>
+Package pdftex.def Info: Osorio_Daniel_HW5-011.pdf  used on input line 255.
+(pdftex.def)             Requested size: 386.95897pt x 128.99306pt.
+ [5 <./Osorio_Daniel_HW5-010.pdf>] [6 <./Osorio_Daniel_HW5-011.pdf>] (./Osorio_
+Daniel_HW5.aux) ) 
 Here is how much of TeX's memory you used:
- 25875 strings out of 492649
- 526485 string characters out of 6129622
- 534528 words of memory out of 5000000
- 29325 multiletter control sequences out of 15000+600000
- 562219 words of font info for 94 fonts, out of 8000000 for 9000
+ 25900 strings out of 492649
+ 527196 string characters out of 6129622
+ 533528 words of memory out of 5000000
+ 29342 multiletter control sequences out of 15000+600000
+ 565054 words of font info for 98 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 55i,8n,67p,10386b,391s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2018/texmf-dist/fonts/type1/
-public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/p
-ublic/amsfonts/cm/cmr10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/pub
-lic/amsfonts/cm/cmr12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/publi
-c/amsfonts/cm/cmsltt10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/publ
-ic/amsfonts/cm/cmssbx10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/pub
-lic/amsfonts/cm/cmsy10.pfb>
-Output written on Osorio_Daniel_HW4.pdf (2 pages, 75556 bytes).
+ 55i,8n,67p,10386b,684s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmmi12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmmi8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmr10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/
+cmr12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+r8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmslt
+t10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmss
+bx10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cms
+y10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmti
+12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt1
+2.pfb>
+Output written on Osorio_Daniel_HW5.pdf (6 pages, 149525 bytes).
 PDF statistics:
- 63 PDF objects out of 1000 (max. 8388607)
- 35 compressed objects within 1 object stream
+ 117 PDF objects out of 1000 (max. 8388607)
+ 73 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 113 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 133 words of extra memory for PDF output out of 10000 (max. 10000000)
 
